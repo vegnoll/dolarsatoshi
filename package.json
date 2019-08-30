@@ -1,15 +1,15 @@
 {
   "name": "dolarsatoshi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "license": "ISC",
   "dependencies": {
-    "currency-formatter": "^1.4.2",
+    "currency-formatter": "^1.5.5",
     "outliers": "0.0.3",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-fontawesome": "^1.6.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "3.1.1"
   },
   "homepage": ".",
   "scripts": {
@@ -23,5 +23,17 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vegnoll/dolarsatoshi.git"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

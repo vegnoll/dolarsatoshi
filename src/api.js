@@ -10,7 +10,7 @@ export const localBitcoins = async () => {
     },
     body:null,
   };
-  const response = await fetch(`${LOCALBITCOINSENDPOINT}/sell-bitcoins-online/vef/.json`, opt);
+  const response = await fetch(`${LOCALBITCOINSENDPOINT}/sell-bitcoins-online/ves/.json`, opt);
   if (response.ok) {
     return await response.json();
   }
