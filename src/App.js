@@ -12,10 +12,10 @@ const SATTOTALUNITS = 100000000;
 
 class App extends Component {
   state = {
-    btcPriceInVef: null,
+    btcPriceInVes: null,
     btcPriceInUsd: null,
     localbitcoinNumPrices: 20,
-    randomVefNum: 150000,
+    randomVesNum: 150000,
     usdQty: '',
     vefQty: '',
     satQty: '',
@@ -23,13 +23,13 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.intervalBtcId = setInterval(() => this.getBtcPriceInVef(), 600000);
+    this.intervalBtcId = setInterval(() => this.getBtcPriceInVes(), 600000);
     this.intervalUsdId = setInterval(() => this.getBtcPriceInUsd(), 600000);
-    this.getBtcPriceInVef();
+    this.getBtcPriceInVes();
     this.getBtcPriceInUsd();
   }
 
-  async getBtcPriceInVef() {
+  async getBtcPriceInVes() {
     const prices = await localBitcoins();
     if (!prices.error) {
       const dataset = [];
@@ -55,7 +55,7 @@ class App extends Component {
         totalPrice += sellPrice;
         j++;
       });
-      this.setState({ btcPriceInVef: totalPrice / j, disabled: '' });
+      this.setState({ btcPriceInVes: totalPrice / j, disabled: '' });
     }
   }
 
@@ -64,17 +64,17 @@ class App extends Component {
     this.setState({ btcPriceInUsd: data[0].price_usd });
   }
 
-  getBtcPriceInVefFmt() {
-    if (this.state.btcPriceInVef) {
-      return currencyFormatter.format(this.state.btcPriceInVef, { code: 'VEF' });
+  getBtcPriceInVesFmt() {
+    if (this.state.btcPriceInVes) {
+      return currencyFormatter.format(this.state.btcPriceInVes, { code: 'VEF' });
     } else {
       return null;
     }
   }
 
-  getUsdPriceInVef() {
-    if (this.state.btcPriceInVef) {
-      return this.state.btcPriceInVef / this.state.btcPriceInUsd;
+  getUsdPriceInVes() {
+    if (this.state.btcPriceInVes) {
+      return this.state.btcPriceInVes / this.state.btcPriceInUsd;
     } else {
       return null;
     }
@@ -88,17 +88,17 @@ class App extends Component {
     }
   }
 
-  getUsdPriceInVefFmt() {
-    if (this.state.btcPriceInVef) {
-      return currencyFormatter.format(this.getUsdPriceInVef(), { code: 'VEF' });
+  getUsdPriceInVesFmt() {
+    if (this.state.btcPriceInVes) {
+      return currencyFormatter.format(this.getUsdPriceInVes(), { code: 'VEF' });
     } else {
       return <FontAwesome name="asterisk" spin />;
     }
   }
 
-  getSatPriceInVefFmt() {
-    if (this.state.btcPriceInVef) {
-      return currencyFormatter.format(this.getSatPrice(this.state.btcPriceInVef), { code: 'VEF' })
+  getSatPriceInVesFmt() {
+    if (this.state.btcPriceInVes) {
+      return currencyFormatter.format(this.getSatPrice(this.state.btcPriceInVes), { code: 'VES' })
     } else {
       return <FontAwesome name="asterisk" spin />;
     }
@@ -109,18 +109,18 @@ class App extends Component {
     return price.toFixed(8);
   }
 
-  convertSatToVef(sats) {
-    const vef = sats * this.getSatPrice(this.state.btcPriceInVef);
+  convertSatToVes(sats) {
+    const ves = sats * this.getSatPrice(this.state.btcPriceInVes);
 
-    return parseInt(vef, 10);
+    return parseInt(ves, 10);
   }
 
   convertSatToUsd(sats) {
     return sats * this.getSatPrice(this.state.btcPriceInUsd);
   }
 
-  convertVefToBtc(vef) {
-    const price = vef / this.state.btcPriceInVef;
+  convertVesToBtc(ves) {
+    const price = ves / this.state.btcPriceInVes;
     return price.toFixed(8);
   }
 
@@ -128,28 +128,28 @@ class App extends Component {
     return Math.round(qty / this.getSatPrice(btcPrice));
   }
 
-  convertVefToUsd(vef) {
-    return vef / this.getUsdPriceInVef();
+  convertVesToUsd(ves) {
+    return ves / this.getUsdPriceInVes();
   }
 
-  convertUsdToVef(usd) {
-    return usd * this.getUsdPriceInVef();
+  convertUsdToVes(usd) {
+    return usd * this.getUsdPriceInVes();
   }
 
   onSatInputChange(event) {
     const re = /^[0-9\b]+$/;
     if (event.target.value === '' || re.test(event.target.value)) {
       const usdQty = this.convertSatToUsd(event.target.value);
-      const vefQty = this.convertSatToVef(event.target.value);
+      const vefQty = this.convertSatToVes(event.target.value);
       this.setState({ usdQty, vefQty, satQty: event.target.value });
     }
   }
 
-  onVefInputChange(event) {
+  onVesInputChange(event) {
     const re = /^[0-9\b]+$/;
     if (event.target.value === '' || re.test(event.target.value)) {
-      const usdQty = this.convertVefToUsd(event.target.value);
-      const satQty = this.convertToSat(event.target.value, this.state.btcPriceInVef);
+      const usdQty = this.convertVesToUsd(event.target.value);
+      const satQty = this.convertToSat(event.target.value, this.state.btcPriceInVes);
       this.setState({ usdQty, satQty, vefQty: event.target.value });
     }
   }
@@ -158,7 +158,7 @@ class App extends Component {
     const re = /^[0-9\b]+$/;
     if (event.target.value === '' || re.test(event.target.value)) {
       const satQty = this.convertToSat(event.target.value, this.state.btcPriceInUsd);
-      const vefQty = this.convertUsdToVef(event.target.value);
+      const vefQty = this.convertUsdToVes(event.target.value);
       this.setState({ vefQty, satQty, usdQty: event.target.value });
     }
   }
@@ -187,10 +187,10 @@ class App extends Component {
           Estos ocho lugares decimales permiten tener acceso a Bitcoin sin la necesidad de tener que comprar uno entero.
         </p>
         <p className="lead">
-          En Venezuela hoy en día el precio de 1 Bitcoin está alrededor de los {this.getBtcPriceInVefFmt()}, sin embargo es
-          posible adquirir, por ejemplo {currencyFormatter.format(this.state.randomVefNum, { code: 'VEF' })} en Bitcoin.
-          Por esos {currencyFormatter.format(this.state.randomVefNum, { code: 'VEF' })} recibirías&nbsp;
-          {this.convertVefToBtc(this.state.randomVefNum)} Bitcoin ó {this.convertToSat(this.state.randomVefNum, this.state.btcPriceInVef)} Satoshis.
+          En Venezuela hoy en día el precio de 1 Bitcoin está alrededor de los {this.getBtcPriceInVesFmt()}, sin embargo es
+          posible adquirir, por ejemplo {currencyFormatter.format(this.state.randomVesNum, { code: 'VES' })} en Bitcoin.
+          Por esos {currencyFormatter.format(this.state.randomVesNum, { code: 'VES' })} recibirías&nbsp;
+          {this.convertVesToBtc(this.state.randomVesNum)} Bitcoin ó {this.convertToSat(this.state.randomVesNum, this.state.btcPriceInVes)} Satoshis.
         </p>
       </div>
     );
@@ -201,7 +201,7 @@ class App extends Component {
       <div className="card text-center">
         <h5 className="card-header">Dólar Satoshi</h5>
         <div className="card-body">
-          <h5 className="card-title">{this.getUsdPriceInVefFmt()}</h5>
+          <h5 className="card-title">{this.getUsdPriceInVesFmt()}</h5>
         </div>
       </div>
     );
@@ -227,15 +227,15 @@ class App extends Component {
         </div>
         <div className="input-group mb-3">
           <div className="input-group-append">
-            <span className="input-group-text" id="vef">VEF</span>
+            <span className="input-group-text" id="ves">VES</span>
           </div>
           <input
             type="text"
             className="form-control"
             placeholder="Cantidad de bolívares"
             aria-label="Cantidad de bolívares"
-            aria-describedby="vef"
-            onChange={this.onVefInputChange.bind(this)}
+            aria-describedby="ves"
+            onChange={this.onVesInputChange.bind(this)}
             value={this.state.vefQty}
             disabled = {(this.state.disabled)? "disabled" : ""}
           />
